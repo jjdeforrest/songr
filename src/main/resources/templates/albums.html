@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+    <h1>hello</h1>
+    <ul>
+        <li th:each="list:${albums}">
+            <p th:text="${list}"></p>
+            <img th:src="${list.imageUrl}">
+        </li>
+
+    </ul>
+</body>
+</html>
