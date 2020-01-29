@@ -12,14 +12,21 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.util.LinkedList;
 import java.util.List;
 
+
+
 @Controller
 public class HomeController {
 
-    @GetMapping
-    public String getHome(Model m){
+    @GetMapping("/")
+    public String getHome(Model m) {
         return "home";
-
     }
+
+    @GetMapping("/hello")
+    public String hello(Model m) {
+        return "hello";
+    }
+
 
     @GetMapping("/albums")
     public String getAlbums(Model m){

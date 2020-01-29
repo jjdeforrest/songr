@@ -44,25 +44,5 @@ public class Album {
     }
 
 
-//    public void setTitle(String title) {
-//        this.title = title;
-//    }
-//
-//    public void setArtist(String artist) {
-//        this.artist = artist;
-//    }
-//
-//    public void setSongCount(Integer songCount) {
-//        this.songCount = songCount;
-//    }
-//
-//    public void setLength(Integer length) {
-//        this.length = length;
-//    }
-//
-//    public void setImageUrl(String imageUrl) {
-//        this.imageUrl = imageUrl;
-//    }
-
 
 }
