@@ -39,5 +39,10 @@ public class AlbumTest {
         assertEquals("example.com", testAlbum.getImageUrl());
     }
 
+
+
+
+
 }
+
 

@@ -8,6 +8,17 @@
 <body>
 
     <h1>hello</h1>
+
+    <form action="/albumss" method="POST">
+        Album name <input type="text" name="title">
+        Album artist <input type="text" name="artist">
+        Album songcount <input type="number" name="songCount">
+        Album length <input type="number" name="length">
+        Album imageurl <input type="text" name="imageUrl">
+        <input type="submit">
+    </form>
+
+
     <ul>
         <li th:each="list:${albums}">
             <p th:text="${list}"></p>
