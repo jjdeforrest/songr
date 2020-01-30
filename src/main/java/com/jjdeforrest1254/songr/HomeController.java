@@ -1,21 +1,24 @@
 package com.jjdeforrest1254.songr;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.servlet.view.RedirectView;
-
-import java.util.LinkedList;
 import java.util.List;
 
 
 
 @Controller
 public class HomeController {
+
+    @Autowired
+    AlbumRepository albumRepository;
 
     @GetMapping("/")
     public String getHome(Model m) {
@@ -27,17 +30,23 @@ public class HomeController {
         return "hello";
     }
 
+    @PostMapping("/albumss")
+    public RedirectView posAlbums(String title, String artist, Integer songCount, Integer length, String imageUrl) {
+        Album newAlbum = new Album(title, artist, songCount, length, imageUrl);
+        System.out.println(newAlbum);
+        albumRepository.save(newAlbum);
+
+        return new RedirectView("/albums");
+
+    }
+
+
 
     @GetMapping("/albums")
     public String getAlbums(Model m){
-        List<Album> list = new LinkedList<>();
-        Album album = new Album("joker", "serious", 10, 12, "https://media.giphy.com/media/RW9sy8IngoQQU/giphy.gif");
-        Album second = new Album("bane", "darkness is your alley", 5, 7, "https://media.giphy.com/media/I8SQMuIELiw0w/giphy.gif");
-        Album third = new Album("thanos", "The hardest choices require the strongest wills", 5, 7, "https://media.giphy.com/media/xUOxeZn47mrdabqDNC/giphy.gif");
-        list.add(album);
-        list.add(second);
-        list.add(third);
-        m.addAttribute("albums", list);
+                List<Album> albums = albumRepository.findAll();
+        System.out.println(albums);
+        m.addAttribute("albums", albums);
         return "albums";
     }
 
@@ -49,9 +58,18 @@ public class HomeController {
     }
 
 
+    @ControllerAdvice
+    public class RestResponseEntityExceptionHandler
+            extends ResponseEntityExceptionHandler {
 
-
-
-
+        @ExceptionHandler(value
+                = { IllegalArgumentException.class, IllegalStateException.class })
+        protected ResponseEntity<Object> handleConflict(
+                RuntimeException ex, WebRequest request) {
+            String bodyOfResponse = "This should be application specific";
+            return handleExceptionInternal(ex, bodyOfResponse,
+                    new HttpHeaders(), HttpStatus.CONFLICT, request);
+        }
+    }
 
 }
