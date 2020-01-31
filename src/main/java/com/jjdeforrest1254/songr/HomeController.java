@@ -18,6 +18,9 @@ import java.util.List;
 public class HomeController {
 
     @Autowired
+    SongRepository songRepository;
+
+    @Autowired
     AlbumRepository albumRepository;
 
     @GetMapping("/")
@@ -29,9 +32,9 @@ public class HomeController {
     public String hello(Model m) {
         return "hello";
     }
-
+////////////////////
     @PostMapping("/albumss")
-    public RedirectView posAlbums(String title, String artist, Integer songCount, Integer length, String imageUrl) {
+    public RedirectView postAlbums(String title, String artist, Integer songCount, Integer length, String imageUrl) {
         Album newAlbum = new Album(title, artist, songCount, length, imageUrl);
         System.out.println(newAlbum);
         albumRepository.save(newAlbum);
@@ -39,9 +42,7 @@ public class HomeController {
         return new RedirectView("/albums");
 
     }
-
-
-
+/////////////
     @GetMapping("/albums")
     public String getAlbums(Model m){
                 List<Album> albums = albumRepository.findAll();
@@ -49,7 +50,7 @@ public class HomeController {
         m.addAttribute("albums", albums);
         return "albums";
     }
-
+////////////////
     @GetMapping("/capitalize/{string}")
     public String caps(@PathVariable String string, Model m) {
         String word = string.toUpperCase();
@@ -57,19 +58,34 @@ public class HomeController {
         return "caps";
     }
 
-
-    @ControllerAdvice
-    public class RestResponseEntityExceptionHandler
-            extends ResponseEntityExceptionHandler {
-
-        @ExceptionHandler(value
-                = { IllegalArgumentException.class, IllegalStateException.class })
-        protected ResponseEntity<Object> handleConflict(
-                RuntimeException ex, WebRequest request) {
-            String bodyOfResponse = "This should be application specific";
-            return handleExceptionInternal(ex, bodyOfResponse,
-                    new HttpHeaders(), HttpStatus.CONFLICT, request);
-        }
+    @GetMapping("/albums/{id}")
+    public String albumDetail(@PathVariable long id, Model m) {
+        Album album = albumRepository.findById(id).get();
+        m.addAttribute("album", album);
+        List<Song> songs = songRepository.findSongByAlbumId(id);
+        m.addAttribute("songs", songs);
+        return "albumdetails";
     }
+
+    @PostMapping("/songdetail")
+    public RedirectView addSong(long id, String title, String length, int trackNumber) {
+        Album myAlbum = albumRepository.getOne(id);
+        Song newSong = new Song(title, length, trackNumber, myAlbum);
+        newSong.album = myAlbum;
+        songRepository.save(newSong);
+        songRepository.findById(id);
+        return new RedirectView("/albums/" + id);
+    }
+
+    @GetMapping("/albumdetails")
+    public String allSongs(Model m) {
+        List<Song> allsongs = songRepository.findAll();
+        m.addAttribute("allsongs", allsongs);
+        return "albumdetails";
+    }
+
+
+
+
 
 }
