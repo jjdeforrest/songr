@@ -8,14 +8,13 @@ import javax.persistence.Id;
 public class Album {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public long id;
 
-    long id;
-
-    String title;
-    String artist;
-    Integer songCount;
-    Integer length;
-    String imageUrl;
+    public String title;
+    public String artist;
+    public Integer songCount;
+    public Integer length;
+    public String imageUrl;
 
     public Album(String title, String artist, Integer songCount, Integer length, String imageUrl) {
         this.title = title;

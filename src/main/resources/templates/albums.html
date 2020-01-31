@@ -23,6 +23,7 @@
         <li th:each="list:${albums}">
             <p th:text="${list}"></p>
             <img th:src="${list.imageUrl}">
+            <a th:href="'/albums/' + ${list.id}">navigate album</a>
         </li>
 
     </ul>
