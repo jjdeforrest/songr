@@ -12,7 +12,7 @@ Created a hello world and a route to capitalize a word to uppercase then a css p
 
 #capitalized words go to the /capitalize/YOUR-WORDS-HERE
 
-#to see some albums, http://localhost:8080/albums you can also add albums 
+#to see some albums, http://localhost:8080/albums you can also add albums click on the link then you can add songs to the albums
 
 #error handler from spring website 
 
